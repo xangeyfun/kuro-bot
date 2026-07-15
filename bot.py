@@ -57,6 +57,10 @@ async def on_ready():
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
 @bot.tree.command(name="vote", description="Vote for someone to go to the padded room", guild=guild)
 async def vote(interaction: Interaction, member: discord.Member):
+    if not isinstance(interaction.channel, discord.TextChannel):
+        await interaction.response.send_message("This command can only be used in text channels.", ephemeral=True)
+        return
+
     data = load_data()
     cooldown = data["cooldowns"]
 
@@ -77,10 +81,6 @@ async def vote(interaction: Interaction, member: discord.Member):
         await interaction.response.send_message(f"There is already an active vote. Please wait until it is finished.", ephemeral=True)
         return 
 
-    if not isinstance(interaction.channel, discord.TextChannel):
-        await interaction.response.send_message("This command can only be used in text channels.", ephemeral=True)
-        return
-
     vote_active = True
     try:
         data["cooldowns"][str(interaction.user.id)] = time.time()
@@ -90,6 +90,8 @@ async def vote(interaction: Interaction, member: discord.Member):
         padded_channel = bot.get_channel(1526952092462219284)
         if isinstance(padded_channel, discord.TextChannel):
             mention = padded_channel.mention
+        else:
+            mention = "the padded room"
         message = await interaction.channel.send(f"{interaction.user.mention} has started a vote to send {member.mention} to {mention}!\nReact with 👍 to vote yes or 👎 to vote no. You have <t:{round(time.time()) + 60}:R> left to vote.", delete_after=70)
 
         await message.add_reaction("👍")
