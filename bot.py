@@ -137,7 +137,7 @@ async def on_message(message):
             
         if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id in banned_ids:
             await message.delete()
-            await message.author.send(f"<@{message.author.id}> You have been banned from using the sticker for repeatedly spamming it. If you think this is a mistake, please DM the admins")
+            await message.author.send(f"<@{message.author.id}> You have been banned from using the sticker. If you think this is a mistake, please DM the admins")
 
     await bot.process_commands(message)
 
