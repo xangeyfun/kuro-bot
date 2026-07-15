@@ -7,8 +7,6 @@ import time
 import json
 import os
 
-from flask import app
-
 load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
