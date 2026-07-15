@@ -23,6 +23,14 @@ if not os.path.exists("data.json") or os.stat("data.json").st_size == 0:
             "active_crazy": {}
         }, f)
 
+if os.path.exists("banned_ids.json"):
+    with open("banned_ids.json", "r") as f:
+        banned_ids = json.load(f)
+else:
+    with open("banned_ids.json", "w") as f:
+        json.dump([], f)
+    banned_ids = []
+
 # Helpers
 
 def load_data():
@@ -116,6 +124,22 @@ async def vote(interaction: Interaction, member: discord.Member):
 
     finally:
         vote_active = False
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if message.stickers:
+        if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id not in banned_ids:
+            await message.add_reaction("❓")
+            await message.channel.send("<@&1488533311776227469>")
+            
+        if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id in banned_ids:
+            await message.delete()
+            await message.author.send(f"<@{message.author.id}> You have been banned from using the sticker for repeatedly spamming it. If you think this is a mistake, please DM the admins")
+
+    await bot.process_commands(message)
 
 @tasks.loop(seconds=5)
 async def check_crazy():
