@@ -105,7 +105,7 @@ async def vote(interaction: Interaction, member: discord.Member):
             mention = padded_channel.mention
         else:
             mention = "the padded room"
-        message = await interaction.channel.send(f"{interaction.user.mention} has started a vote to send {member.mention} to {mention}!\nReact with 👍 to vote yes or 👎 to vote no. You have <t:{round(time.time()) + 60}:R> left to vote.", delete_after=70)
+        message = await interaction.channel.send(f"{interaction.user.mention} has started a vote to send {member.mention} to {mention}!\nReact with 👍 to vote yes or 👎 to vote no. You have <t:{round(time.time()) + 60}:R> left to vote.")
 
         await message.add_reaction("👍")
         await message.add_reaction("👎")
@@ -124,17 +124,17 @@ async def vote(interaction: Interaction, member: discord.Member):
                 no_votes = reaction.count - 1
 
         if yes_votes > no_votes:
-            await interaction.channel.send(f"**{yes_votes}** people voted to send {member.mention} to {mention}! They will be released <t:{round(time.time()) + 300}:R>.", delete_after=310)
+            await interaction.channel.send(f"**{yes_votes}** people voted to send {member.mention} to {mention}! They will be released <t:{round(time.time()) + 300}:R>.")
             data["active_crazy"][str(member.id)] = time.time() + 300
             role = interaction.guild.get_role(1526950301066858587) # type: ignore
             if role:
                 await member.add_roles(role)
                 channel = bot.get_channel(1526952092462219284) # type: ignore
                 if channel and isinstance(channel, discord.TextChannel):
-                    await channel.send(f"{member.mention} You have been sent to the padded room.\nYou will be released <t:{round(time.time()) + 300}:R>.", delete_after=310)
+                    await channel.send(f"{member.mention} You have been sent to the padded room.\nYou will be released <t:{round(time.time()) + 300}:R>.")
             save_data(data)
         else:
-            await interaction.channel.send(f"{member.mention} has not been sent to {mention}.", delete_after=10)
+            await interaction.channel.send(f"{member.mention} has not been sent to {mention}.")
             save_data(data)
 
     finally:
@@ -173,7 +173,7 @@ async def check_crazy():
                     await member.remove_roles(role)
                     channel = guild.get_channel(1487803812373725296) # type: ignore
                     if channel and isinstance(channel, discord.TextChannel):
-                        await channel.send(f"{member.mention} has been released from the padded room.", delete_after=10)
+                        await channel.send(f"{member.mention} has been released from the padded room.")
             del active_crazy[user]
             changed = True
     if changed:
