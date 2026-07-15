@@ -7,6 +7,8 @@ import time
 import json
 import os
 
+from flask import app
+
 load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
@@ -52,6 +54,19 @@ async def on_ready():
 
     if not check_crazy.is_running():
         check_crazy.start()
+
+@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
+@bot.tree.command(name="ping", description="Check the bot's latency", guild=guild)
+async def ping(interaction: Interaction):
+    latency = round(bot.latency * 1000)
+    await interaction.response.send_message(f"Pong! Latency: {latency}ms", ephemeral=True)
+
+@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
+@bot.tree.command(name="github", description="Get the bot's GitHub repository link", guild=guild)
+async def github(interaction: Interaction):
+    await interaction.response.send_message("You can find the bot's source code on GitHub:\nhttps://github.com/xangeyfun/kuro-bot", ephemeral=True)
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
