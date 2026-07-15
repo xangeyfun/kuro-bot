@@ -9,3 +9,7 @@ a silly discord bot for voting to send people to the padded room. made for a spe
 - 15-minute cooldown between votes to prevent spam
 
 That's it. It's just for fun.
+
+## invite
+
+https://discord.gg/MhBG6fgPmS
