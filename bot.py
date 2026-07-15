@@ -78,7 +78,7 @@ async def vote(interaction: Interaction, member: discord.Member):
     cooldown = data["cooldowns"]
 
     if str(interaction.user.id) in cooldown and time.time() - cooldown[str(interaction.user.id)] < 900:
-        await interaction.response.send_message(f"You are on cooldown. You can vote again in <t:{round(cooldown[str(interaction.user.id)] + 900)}:R>.", ephemeral=True)
+        await interaction.response.send_message(f"You are on cooldown. You can vote again **<t:{round(cooldown[str(interaction.user.id)] + 900)}:R>**.", ephemeral=True)
         return
 
     if interaction.user.id == member.id:
@@ -86,7 +86,7 @@ async def vote(interaction: Interaction, member: discord.Member):
         return
 
     if len(data["active_crazy"]):
-        await interaction.response.send_message(f"There is already someone in the padded room. You cannot start a new vote until they are released. (<t:{round(data['active_crazy'][list(data['active_crazy'].keys())[0]])}:R>)", ephemeral=True)
+        await interaction.response.send_message(f"There is already someone in the padded room. You cannot start a new vote until they are released. (**<t:{round(data['active_crazy'][list(data['active_crazy'].keys())[0]])}:R>**)", ephemeral=True)
         return
 
     global vote_active
@@ -105,7 +105,7 @@ async def vote(interaction: Interaction, member: discord.Member):
             mention = padded_channel.mention
         else:
             mention = "the padded room"
-        message = await interaction.channel.send(f"{interaction.user.mention} has started a vote to send {member.mention} to {mention}!\nReact with 👍 to vote yes or 👎 to vote no. You have <t:{round(time.time()) + 60}:R> left to vote.")
+        message = await interaction.channel.send(f"{interaction.user.mention} has started a vote to send {member.mention} to {mention}!\n**React with 👍 to vote yes or 👎 to vote no**. The vote will end **<t:{round(time.time()) + 60}:R>**.")
 
         await message.add_reaction("👍")
         await message.add_reaction("👎")
@@ -124,14 +124,14 @@ async def vote(interaction: Interaction, member: discord.Member):
                 no_votes = reaction.count - 1
 
         if yes_votes > no_votes:
-            await interaction.channel.send(f"**{yes_votes}** people voted to send {member.mention} to {mention}! They will be released <t:{round(time.time()) + 300}:R>.")
+            await interaction.channel.send(f"**{yes_votes}** people voted to send {member.mention} to {mention}! They will be released **<t:{round(time.time()) + 300}:R>**.")
             data["active_crazy"][str(member.id)] = time.time() + 300
             role = interaction.guild.get_role(1526950301066858587) # type: ignore
             if role:
                 await member.add_roles(role)
                 channel = bot.get_channel(1526952092462219284) # type: ignore
                 if channel and isinstance(channel, discord.TextChannel):
-                    await channel.send(f"{member.mention} You have been sent to the padded room.\nYou will be released <t:{round(time.time()) + 300}:R>.")
+                    await channel.send(f"{member.mention} You have been sent to the padded room. You will be released **<t:{round(time.time()) + 300}:R>**.")
             save_data(data)
         else:
             await interaction.channel.send(f"{member.mention} has not been sent to {mention}.")
