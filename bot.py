@@ -65,7 +65,7 @@ async def vote(interaction: Interaction, member: discord.Member):
     cooldown = data["cooldowns"]
 
     if str(interaction.user.id) in cooldown and time.time() - cooldown[str(interaction.user.id)] < 900:
-        await interaction.response.send_message("You can only vote once every 15 minutes.", ephemeral=True)
+        await interaction.response.send_message(f"You are on cooldown. You can vote again in <t:{round(cooldown[str(interaction.user.id)] + 900)}:R>.", ephemeral=True)
         return
 
     if interaction.user.id == member.id:
