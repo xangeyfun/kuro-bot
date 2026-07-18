@@ -145,6 +145,18 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    if message.content.strip().lower() == "quack":
+        await message.add_reaction("🦆")
+        await message.channel.send("Quack! 🦆")
+
+    if message.content.strip().lower() == "meow":
+        await message.add_reaction("🐱")
+        await message.channel.send("Meow! 🐱")
+
+    if message.content.strip().lower() == "woof":
+        await message.add_reaction("🐶")
+        await message.channel.send("Woof! 🐶")
+
     if message.stickers:
         if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id not in banned_ids:
             await message.add_reaction("❓")
