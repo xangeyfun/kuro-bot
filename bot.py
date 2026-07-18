@@ -13,7 +13,6 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Type / for commands"))
 TOKEN = os.getenv("TOKEN") or ""
-guild = discord.Object(id=int(os.getenv("GUILD_ID") or 0))
 vote_active = False
 
 if not os.path.exists("data.json") or os.stat("data.json").st_size == 0:
@@ -45,7 +44,7 @@ def save_data(data):
 async def on_ready():
     print(f"Logged in as {bot.user.name} ({bot.user.id})") # type: ignore
     try:
-        synced = await bot.tree.sync(guild=guild)
+        synced = await bot.tree.sync()
         print(f"Synced {len(synced)} commands")
     except Exception as e:
         print(f"Error syncing commands: {e}")
@@ -55,21 +54,25 @@ async def on_ready():
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="ping", description="Check the bot's latency", guild=guild)
+@bot.tree.command(name="ping", description="Check the bot's latency") #, guild=guild)
 async def ping(interaction: Interaction):
     latency = round(bot.latency * 1000)
     await interaction.response.send_message(f"Pong! Latency: {latency}ms", ephemeral=True)
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="github", description="Get the bot's GitHub repository link", guild=guild)
+@bot.tree.command(name="github", description="Get the bot's GitHub repository link") #, guild=guild)
 async def github(interaction: Interaction):
     await interaction.response.send_message("You can find the bot's source code on GitHub:\nhttps://github.com/xangeyfun/kuro-bot", ephemeral=True)
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="vote", description="Vote for someone to go to the padded room", guild=guild)
+@bot.tree.command(name="vote", description="Vote for someone to go to the padded room") #, guild=guild)
 async def vote(interaction: Interaction, member: discord.Member):
+    if interaction.guild and interaction.guild.id != 1487803811178352832:
+        await interaction.response.send_message("Sorry, you cannot use that here! This command is only available at:\n- https://discord.gg/MhBG6fgPmS", ephemeral=True)
+        return
+
     if not isinstance(interaction.channel, discord.TextChannel):
         await interaction.response.send_message("This command can only be used in text channels.", ephemeral=True)
         return
