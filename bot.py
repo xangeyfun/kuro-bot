@@ -171,6 +171,17 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+@bot.event
+async def on_member_join(member):
+    data = load_data()
+    if str(member.id) in data["active_crazy"]:
+        role = member.guild.get_role(1526950301066858587)
+        if role:
+            await member.add_roles(role)
+            channel = member.guild.get_channel(1526952092462219284) # type: ignore
+            if channel and isinstance(channel, discord.TextChannel):
+                await channel.send(f"{member.mention} You have been sent to the padded room. You will be released **<t:{round(data['active_crazy'][str(member.id)]):R}>**.")
+
 @tasks.loop(seconds=5)
 async def check_crazy():
     data = load_data()
