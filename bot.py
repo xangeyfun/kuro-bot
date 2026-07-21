@@ -122,163 +122,8 @@ async def leaderboard(interaction: Interaction):
 
     await interaction.response.send_message(leaderboard_message, ephemeral=True)
 
-throw_sentences = {
-    "Rock": [
-        "Pretty heavy for something that was just sitting there.",
-        "I hope they ducked.",
-        "Probably wasn't using that wall anyway.",
-    ],
-    "Potato": [
-        "Nutritionally questionable at best.",
-        "It landed with a thud. No one was surprised.",
-        "Still more useful than it was in the kitchen.",
-    ],
-    "Brick": [
-        "That's gonna leave a mark.",
-        "Solid choice. Literally.",
-        "Someone's gonna feel that in the morning.",
-    ],
-    "Rubber Duck": [
-        "It squeaked on impact.",
-        "Somehow the most threatening thing in the room.",
-        "Absolutely no remorse.",
-    ],
-    "Fish": [
-        "It smells worse in here now.",
-        "Still flopping around in there.",
-        "Nobody asked for this.",
-    ],
-    "Coconut": [
-        "One solid hit. That's all it took.",
-        "Deceptively heavy for a fruit.",
-        "Cracked open on contact.",
-    ],
-    "Cheese Wheel": [
-        "The smell arrived before the cheese did.",
-        "Aged to perfection. Thrown with intent.",
-        "That's going to ripen nicely in there.",
-    ],
-    "Baguette": [
-        "Crispy on impact.",
-        "Fresh from the bakery, ruined in seconds.",
-        "The French would be disappointed.",
-    ],
-    "Cactus": [
-        "Good luck getting that out.",
-        "Everyone within a 5-foot radius winced.",
-        "It's not coming back out without a fight.",
-    ],
-    "Office Chair": [
-        "Rolling with bad intentions.",
-        "Still has the sticker on the bottom.",
-        "That one was ergonomic.",
-    ],
-    "Gaming Laptop": [
-        "RGB lights still flashing on impact.",
-        "Hope nobody was mid-game.",
-        "Worth more than everyone in that room combined.",
-    ],
-    "Keyboard": [
-        "Keys flew everywhere.",
-        "Ctrl+Alt+Delete that from your memory.",
-        "All those keys, and none of them helped.",
-    ],
-    "Mouse": [
-        "No wires, no mercy.",
-        "Still scrolling through your search history.",
-        "Right-click, throw, delete.",
-    ],
-    "Teddy Bear": [
-        "It's staring at everyone now.",
-        "Used to be someone's favorite.",
-        "The eyes follow you.",
-    ],
-    "Wet Sock": [
-        "Everyone smelled it. Nobody confessed.",
-        "Still damp. Still gross.",
-        "That's staying in the corner forever.",
-    ],
-    "Plunger": [
-        "Wrong end of the plunger for this situation.",
-        "Stuck to the wall on the way in.",
-        "Someone's gonna need that later.",
-    ],
-    "Toilet": [
-        "Seats down. For once.",
-        "A bold addition to the room's decor.",
-        "Still flushing from the trip over.",
-    ],
-    "Shopping Cart": [
-        "Wobbly wheel and all.",
-        "Still has a coupon in the basket.",
-        "Found in a parking lot. Returned to sender.",
-    ],
-    "Television": [
-        "Smashed on arrival. No signal.",
-        "Still tuned to channel nobody watches.",
-        "The screen cracked before it hit the floor.",
-    ],
-    "Fire Extinguisher": [
-        "For emergency use only. This counts.",
-        "Still has the inspection tag on it.",
-        "Sprayed the whole way there.",
-    ],
-    "Mattress": [
-        "Memory foam absorbed the impact.",
-        "Still has the tags on it.",
-        "Landed perfectly. Wrong place, though.",
-    ],
-    "Door": [
-        "No one opened it. It just flew in.",
-        "Still has the doorknob.",
-        "Wrong room, technically.",
-    ],
-    "Satellite": [
-        "Still blinking.",
-        "Probably still recording.",
-        "That's worth more than the building.",
-    ],
-    "Rocket": [
-        "Did not go where it was supposed to.",
-        "Shorter trip than intended.",
-        "The fins are dented already.",
-    ],
-    "The Moon": [
-        "Everyone just stared at it for a second.",
-        "Somehow it fit through the door.",
-        "Still glowing. No one's happy about it.",
-    ],
-}
-
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@app_commands.choices(item=[
-    app_commands.Choice(name="🪨 Rock", value="Rock"),
-    app_commands.Choice(name="🥔 Potato", value="Potato"),
-    app_commands.Choice(name="🧱 Brick", value="Brick"),
-    app_commands.Choice(name="🦆 Rubber Duck", value="Rubber Duck"),
-    app_commands.Choice(name="🐟 Fish", value="Fish"),
-    app_commands.Choice(name="🥥 Coconut", value="Coconut"),
-    app_commands.Choice(name="🧀 Cheese Wheel", value="Cheese Wheel"),
-    app_commands.Choice(name="🥖 Baguette", value="Baguette"),
-    app_commands.Choice(name="🌵 Cactus", value="Cactus"),
-    app_commands.Choice(name="🪑 Office Chair", value="Office Chair"),
-    app_commands.Choice(name="💻 Gaming Laptop", value="Gaming Laptop"),
-    app_commands.Choice(name="⌨️ Keyboard", value="Keyboard"),
-    app_commands.Choice(name="🖱️ Mouse", value="Mouse"),
-    app_commands.Choice(name="🧸 Teddy Bear", value="Teddy Bear"),
-    app_commands.Choice(name="🧦 Wet Sock", value="Wet Sock"),
-    app_commands.Choice(name="🪠 Plunger", value="Plunger"),
-    app_commands.Choice(name="🚽 Toilet", value="Toilet"),
-    app_commands.Choice(name="🛒 Shopping Cart", value="Shopping Cart"),
-    app_commands.Choice(name="📺 Television", value="Television"),
-    app_commands.Choice(name="🧯 Fire Extinguisher", value="Fire Extinguisher"),
-    app_commands.Choice(name="🛏️ Mattress", value="Mattress"),
-    app_commands.Choice(name="🚪 Door", value="Door"),
-    app_commands.Choice(name="🛰️ Satellite", value="Satellite"),
-    app_commands.Choice(name="🚀 Rocket", value="Rocket"),
-    app_commands.Choice(name="🌕 The Moon", value="The Moon"),
-])
 @bot.tree.command(name="throw", description="Throw an item into the padded room") #, guild=guild)
 async def throw(interaction: Interaction, item: str):
     if interaction.guild and interaction.guild.id != 1487803811178352832:
@@ -295,12 +140,10 @@ async def throw(interaction: Interaction, item: str):
         await interaction.response.send_message("There is no one in the padded room to throw items at.", ephemeral=True)
         return
 
-    sentence = random.choice(throw_sentences[item])
-
     padded_channel = bot.get_channel(1526952092462219284)
     if isinstance(padded_channel, discord.TextChannel):
-        await padded_channel.send(f"{interaction.user.mention} has thrown **{item}** into the padded room!\n*{sentence}*")
-        await interaction.response.send_message(f"You have thrown **{item}** into the padded room.\n*{sentence}*", ephemeral=True)
+        await padded_channel.send(f"{interaction.user.mention} has thrown **{item}** into the padded room!")
+        await interaction.response.send_message(f"You have thrown **{item}** into the padded room.", ephemeral=True)
     else:
         await interaction.response.send_message("The padded room channel could not be found.", ephemeral=True)
 
@@ -316,6 +159,19 @@ async def vote(interaction: Interaction, member: discord.Member):
         await interaction.response.send_message("This command can only be used in text channels.", ephemeral=True)
         return
 
+    if interaction.user.id == member.id:
+        await interaction.response.send_message("You cannot vote for yourself.", ephemeral=True)
+        return
+
+    if member.bot:
+        await interaction.response.send_message("You cannot vote for a bot.", ephemeral=True)
+        return
+
+    global vote_active
+    if vote_active:
+        await interaction.response.send_message(f"There is already an active vote. Please wait until it is finished.", ephemeral=True)
+        return 
+
     data = load_data()
     cooldown = data["cooldowns"]
 
@@ -323,18 +179,9 @@ async def vote(interaction: Interaction, member: discord.Member):
         await interaction.response.send_message(f"You are on cooldown. You can vote again **<t:{round(cooldown[str(interaction.user.id)] + 900)}:R>**.", ephemeral=True)
         return
 
-    if interaction.user.id == member.id:
-        await interaction.response.send_message("You cannot vote for yourself.", ephemeral=True)
-        return
-
     if len(data["active_crazy"]):
         await interaction.response.send_message(f"There is already someone in the padded room. You cannot start a new vote until they are released. (**<t:{round(data['active_crazy'][list(data['active_crazy'].keys())[0]])}:R>**)", ephemeral=True)
         return
-
-    global vote_active
-    if vote_active:
-        await interaction.response.send_message(f"There is already an active vote. Please wait until it is finished.", ephemeral=True)
-        return 
 
     vote_active = True
     try:
