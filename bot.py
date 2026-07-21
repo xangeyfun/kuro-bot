@@ -19,7 +19,8 @@ if not os.path.exists("data.json") or os.stat("data.json").st_size == 0:
     with open("data.json", "w") as f:
         json.dump({
             "cooldowns": {},
-            "active_crazy": {}
+            "active_crazy": {},
+            "stats": {}
         }, f)
 
 if os.path.exists("banned_ids.json"):
@@ -64,6 +65,29 @@ async def ping(interaction: Interaction):
 @bot.tree.command(name="github", description="Get the bot's GitHub repository link") #, guild=guild)
 async def github(interaction: Interaction):
     await interaction.response.send_message("You can find the bot's source code on GitHub:\nhttps://github.com/xangeyfun/kuro-bot", ephemeral=True)
+
+@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
+@bot.tree.command(name="stats", description="Get the bot's statistics") #, guild=guild)
+async def stats(interaction: Interaction):
+    data = load_data()
+    stats = data["stats"]
+
+    total_votes = stats.get("total_votes", 0)
+    user_votes = stats.get(str(interaction.user.id), {}).get("votes", 0)
+
+    await interaction.response.send_message(f"Total votes cast: {total_votes}\nYour votes: {user_votes}", ephemeral=True)
+
+@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
+@bot.tree.command(name="profile", description="Get a user's profile statistics") #, guild=guild)
+async def profile(interaction: Interaction, member: discord.Member):
+    data = load_data()
+    stats = data["stats"]
+
+    times_sent = stats.get(str(member.id), {}).get("times_sent", 0)
+
+    await interaction.response.send_message(f"{member.mention}'s profile:\nTimes sent to the padded room: {times_sent}", ephemeral=True)
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
@@ -135,6 +159,11 @@ async def vote(interaction: Interaction, member: discord.Member):
                 channel = bot.get_channel(1526952092462219284) # type: ignore
                 if channel and isinstance(channel, discord.TextChannel):
                     await channel.send(f"{member.mention} You have been sent to the padded room. You will be released **<t:{round(time.time()) + 300}:R>**.")
+
+            data["stats"][str(member.id)] = {"times_sent": data["stats"].get(str(member.id), {}).get("times_sent", 0) + 1}
+            data["stats"][str(interaction.user.id)] = {"votes": data["stats"].get(str(interaction.user.id), {}).get("votes", 0) + 1}
+            data["stats"]["total_votes"] = data["stats"].get("total_votes", 0) + 1
+            
             save_data(data)
         else:
             await interaction.channel.send(f"{member.mention} has not been sent to {mention}.")
