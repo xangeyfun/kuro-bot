@@ -53,6 +53,13 @@ async def on_ready():
     if not check_crazy.is_running():
         check_crazy.start()
 
+@bot.event
+async def on_interaction(interaction: Interaction):
+    if interaction.type == discord.InteractionType.application_command:
+        print(f"Command '/{interaction.data['name']}' invoked by '{interaction.user}' in '{interaction.guild}' (ID: {interaction.guild_id})")
+    elif interaction.type == discord.InteractionType.component:
+        print(f"Component interaction invoked by '{interaction.user}' in '{interaction.guild}' (ID: {interaction.guild_id})")
+
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
 @bot.tree.command(name="ping", description="Check the bot's latency") #, guild=guild)
