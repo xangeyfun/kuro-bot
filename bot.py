@@ -142,7 +142,7 @@ async def throw(interaction: Interaction, item: str):
 
     padded_channel = bot.get_channel(1526952092462219284)
     if isinstance(padded_channel, discord.TextChannel):
-        await padded_channel.send(f"{interaction.user.mention} has thrown **{item}** into the padded room!")
+        await padded_channel.send(f"{interaction.user.mention} has thrown **{item}** into the padded room!", allowed_mentions=discord.AllowedMentions(users=[interaction.user], roles=False, everyone=False))
         await interaction.response.send_message(f"You have thrown **{item}** into the padded room.", ephemeral=True)
     else:
         await interaction.response.send_message("The padded room channel could not be found.", ephemeral=True)
