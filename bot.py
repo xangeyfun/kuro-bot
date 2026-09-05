@@ -13,9 +13,9 @@ load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
-bot = commands.Bot(command_prefix="!", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Type / for commands"))
+bot = commands.Bot(command_prefix="", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="over everyone 👀"))
 TOKEN = os.getenv("TOKEN") or ""
-meow = re.compile(r"^(m+e+o+w+|m+r+o+w+|n+y+a+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
+meow = re.compile(r"^(m+[eraop]+w*|n+y+a+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 woof = re.compile(r"^(w+o+f+|b+a+r+k+|a+r+f+|r+u+f+|a+w+o+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 vote_active = False
 
@@ -268,8 +268,6 @@ async def on_message(message):
         if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id in banned_ids:
             await message.delete()
             await message.author.send(f"<@{message.author.id}> You have been banned from using the sticker. If you think this is a mistake, please DM the admins")
-
-    await bot.process_commands(message)
 
 @bot.event
 async def on_member_join(member):
