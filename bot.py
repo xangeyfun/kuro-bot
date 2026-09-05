@@ -142,54 +142,6 @@ async def github(interaction: Interaction):
 
 @app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="stats", description="Get the bot's statistics") #, guild=guild)
-async def stats(interaction: Interaction):
-    data = load_data()
-    stats = data["stats"]
-
-    total_votes = stats.get("total_votes", 0)
-    user_votes = stats.get(str(interaction.user.id), {}).get("votes", 0)
-
-    await interaction.response.send_message(f"Total votes cast: {total_votes}\nYour votes: {user_votes}", ephemeral=True)
-
-@app_commands.allowed_installs(guilds=True, users=False)
-@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="profile", description="Get a user's profile statistics") #, guild=guild)
-async def profile(interaction: Interaction, member: discord.Member):
-    data = load_data()
-    stats = data["stats"]
-
-    times_sent = stats.get(str(member.id), {}).get("times_sent", 0)
-
-    await interaction.response.send_message(f"{member.mention}'s profile:\nTimes sent to the padded room: {times_sent}", ephemeral=True)
-
-@app_commands.allowed_installs(guilds=True, users=False)
-@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
-@bot.tree.command(name="leaderboard", description="Get the leaderboard of users sent to the padded room") #, guild=guild)
-async def leaderboard(interaction: Interaction):
-    data = load_data()
-    stats = data["stats"]
-
-    leaderboard = sorted(
-        ((user_id, user_stats.get("times_sent", 0)) for user_id, user_stats in stats.items() if user_id != "total_votes"),
-        key=lambda x: x[1],
-        reverse=True
-    )
-
-    if not leaderboard:
-        await interaction.response.send_message("No users have been sent to the padded room yet.", ephemeral=True)
-        return
-
-    leaderboard_message = "Leaderboard of users sent to the padded room:\n"
-    for rank, (user_id, times_sent) in enumerate(leaderboard, start=1):
-        member = interaction.guild.get_member(int(user_id))
-        if member:
-            leaderboard_message += f"{rank}. {member.mention} - {times_sent} times\n"
-
-    await interaction.response.send_message(leaderboard_message, ephemeral=True)
-
-@app_commands.allowed_installs(guilds=True, users=False)
-@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=False)
 @bot.tree.command(name="throw", description="Throw an item into the padded room") #, guild=guild)
 async def throw(interaction: Interaction, item: str):
     if interaction.guild and interaction.guild.id != 1487803811178352832:
