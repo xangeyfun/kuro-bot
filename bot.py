@@ -86,8 +86,7 @@ if not os.path.exists("data.json") or os.stat("data.json").st_size == 0:
     with open("data.json", "w") as f:
         json.dump({
             "cooldowns": {},
-            "active_crazy": {},
-            "stats": {}
+            "active_crazy": {}
         }, f)
 
 if os.path.exists("banned_ids.json"):
@@ -240,10 +239,6 @@ async def vote(interaction: Interaction, member: discord.Member):
                 if channel and isinstance(channel, discord.TextChannel):
                     await channel.send(f"{member.mention} You have been sent to the padded room. You will be released **<t:{round(time.time()) + 300}:R>**.")
 
-            data["stats"][str(member.id)] = {"times_sent": data["stats"].get(str(member.id), {}).get("times_sent", 0) + 1}
-            data["stats"][str(interaction.user.id)] = {"votes": data["stats"].get(str(interaction.user.id), {}).get("votes", 0) + 1}
-            data["stats"]["total_votes"] = data["stats"].get("total_votes", 0) + 1
-            
             save_data(data)
         else:
             await interaction.channel.send(f"{member.mention} has not been sent to {mention}.")
