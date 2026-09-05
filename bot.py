@@ -7,6 +7,7 @@ import time
 import json
 import os
 import random
+import re
 
 load_dotenv()
 intents = discord.Intents.default()
@@ -14,7 +15,72 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Type / for commands"))
 TOKEN = os.getenv("TOKEN") or ""
+meow = re.compile(r"^(m+e+o+w+|m+r+o+w+|n+y+a+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
+woof = re.compile(r"^(w+o+f+|b+a+r+k+|a+r+f+|r+u+f+|a+w+o+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 vote_active = False
+
+meow_responses = [
+    "Meow! 🐱",
+    "Mew! 🐱",
+    "Mrow! 🐱",
+    "Mrrp! 🐱",
+    "Mrrr! 🐱",
+    "Purr... 🐱",
+    "Purrr... 🐱",
+    "meow :3 🐱",
+    "mrow :3",
+    "mrrp :3",
+    "meow meow!! 🐱",
+    "meow meow meow! 🐱",
+    "MEOOOOW!!! 🐱",
+    "MEEEOOOOW!!! 🐱",
+    "MEOW!!!",
+    "MEEEEOW!!! 🐱",
+    "Mrrrrowww! 🐱",
+    "Mrrr... meow.",
+    "*meows* 🐱",
+    "M E O W 🐱",
+    "m e o w :3",
+    "meow? 🐱",
+    "meow!!! :3",
+    "meow :333 🐱",
+    "mrowwww :3",
+    "mrrrp! :3",
+    "prrrrrr 🐱",
+    "prrrt! 🐱",
+    "nya! 🐱",
+    "nyaa~ 🐱",
+    "nyaa :3",
+    "Nya! 🐱",
+    "Nyaa~ 🐱",
+    "Mew mew! 🐱",
+    "Mrow mrow! 🐱",
+]
+
+woof_responses = [
+    "Woof! 🐶",
+    "Bark! 🐶",
+    "Arf! 🐶",
+    "Ruff! 🐶",
+    "Wruff! 🐶",
+    "Awoof! 🐶",
+    "woof :3 🐶",
+    "arf :3",
+    "woof woof!! 🐶",
+    "WOOF!!! 🐶",
+    "WOOOOOOF!!! 🐶",
+    "*woofs* 🐶",
+    "W O O F 🐶",
+    "w o o f :3",
+    "woof? 🐶",
+    "woof!!! :3",
+    "woof :333 🐶",
+    "ruff ruff! 🐶",
+    "arf arf! 🐶",
+    "AWOOOOOO! 🐶",
+    "Awooo! 🐶",
+    "Awooo :3 🐶",
+]
 
 if not os.path.exists("data.json") or os.stat("data.json").st_size == 0:
     with open("data.json", "w") as f:
@@ -236,20 +302,16 @@ async def vote(interaction: Interaction, member: discord.Member):
 
 @bot.event
 async def on_message(message):
-    if message.author == bot.user:
+    if message.author == bot.user or message.author.bot:
         return
 
-    if message.content.strip().lower() == "quack":
-        await message.add_reaction("🦆")
-        await message.channel.send("Quack! 🦆")
-
-    if message.content.strip().lower() == "meow":
+    elif meow.search(message.content.strip()):
         await message.add_reaction("🐱")
-        await message.channel.send("Meow! 🐱")
+        await message.channel.send(random.choice(meow_responses))
 
-    if message.content.strip().lower() == "woof":
+    elif woof.search(message.content.strip()):
         await message.add_reaction("🐶")
-        await message.channel.send("Woof! 🐶")
+        await message.channel.send(random.choice(woof_responses))
 
     if message.stickers:
         if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id not in banned_ids:
