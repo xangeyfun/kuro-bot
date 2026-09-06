@@ -18,6 +18,7 @@ TOKEN = os.getenv("TOKEN") or ""
 meow = re.compile(r"^(m+[eraop]+w*|n+y+a+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 woof = re.compile(r"^(w+[oa]+f+|b+a+r+k+|a+r+f+|w*r+u+f+|a+w+o+)\s*~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 vote_active = False
+boykisser = None
 
 meow_responses = [
     "Meow!",
@@ -118,6 +119,9 @@ async def on_ready():
 
     if not check_crazy.is_running():
         check_crazy.start()
+
+    global boykisser
+    boykisser = bot.get_emoji(1488541008261288088)
 
 @bot.event
 async def on_interaction(interaction: Interaction):
@@ -252,11 +256,15 @@ async def on_message(message):
     if message.author == bot.user or message.author.bot:
         return
 
-    elif meow.search(message.content.strip()):
+    if meow.search(message.content.strip()):
         await message.channel.send(random.choice(meow_responses))
 
     elif woof.search(message.content.strip()):
         await message.channel.send(random.choice(woof_responses))
+
+    if boykisser and str(boykisser) in message.content:
+        await message.add_reaction(boykisser)
+        await message.channel.send(str(boykisser)*3)
 
     if message.stickers:
         if "https://cdn.discordapp.com/stickers/1488531621996134430.png" in [sticker.url for sticker in message.stickers] and message.author.id not in banned_ids:
