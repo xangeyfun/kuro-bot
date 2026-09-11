@@ -16,14 +16,13 @@ a silly discord bot for voting to send people to the padded room. made for a spe
 
 say these in chat and the bot will reply:
 
-- `quack` 🦆
 - `meow` 🐱
 - `woof` 🐶
 
 ## sticker detection
 
-if someone uses a specific sticker, the bot will ping a role. users can be banned from using the sticker via `banned_ids.json`.
+if someone sends a specific sticker, the bot will ping the mods role. users can be banned from using the sticker via `banned_ids.json`.
 
-## invite
+## server invite
 
 https://discord.gg/MhBG6fgPmS
