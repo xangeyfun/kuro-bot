@@ -15,7 +15,7 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix="", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="over everyone 👀"))
 TOKEN = os.getenv("TOKEN") or ""
-meow = re.compile(r"^((m+[eraop]+w*|n+y+a+)\s*)+~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
+meow = re.compile(r"^((m+[eraop]+w*p*|n+y+a+|p+r+)\s*)+~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 woof = re.compile(r"^((w+[oa]+f+|b+a+r+k+|a+r+f+|w*r+u+f+|a+w+o+)\s*)+~*\s*[.!?]*\s*(:3+)?$", re.IGNORECASE)
 vote_active = False
 boykisser = None
