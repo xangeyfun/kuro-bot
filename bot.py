@@ -15,7 +15,7 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix="", intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="over everyone 👀"))
 TOKEN = os.getenv("TOKEN") or ""
-meow = re.compile(r"^\**((m+[eraop]+w*p*|n+y+a+|p+r+)\**\s*)+~*\s*[.!?]*\s*(:3+)?\**$", re.IGNORECASE)
+meow = re.compile(r"^\**((m+[eraop]+w+p*|n+y+a+|p+r+)\**\s*)+~*\s*[.!?]*\s*(:3+)?\**$", re.IGNORECASE)
 woof = re.compile(r"^\**((w+[oa]+f+|b+a+r+k+|a+r+f+|w*r+u+f+|a+w+o+)\**\s*)+~*\s*[.!?]*\s*(:3+)?\**$", re.IGNORECASE)
 vote_active = False
 boykisser = None
@@ -263,6 +263,10 @@ async def on_message(message):
     elif woof.search(message.content.strip()):
         await message.add_reaction("🐶")
         await message.channel.send(random.choice(woof_responses))
+
+    elif ("ridhwaan" in message.content.lower() or message.author.id == 657925022223958016) and random.randint(1, 25) == 1:
+        await message.add_reaction("🤓")
+        await message.channel.send("NERRDDDD!!!!!!!!!!")
 
     if boykisser and str(boykisser) in message.content:
         await message.add_reaction(boykisser)
